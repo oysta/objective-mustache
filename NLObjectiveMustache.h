@@ -25,25 +25,27 @@
 
 #import <Foundation/Foundation.h>
 
+@class NLArrayStack;
 
 @interface NLObjectiveMustache : NSObject {
     BOOL inVariable;
-    NSString *template;
+    NSString *templateStr;
     NSScanner *scanner;
     NSMutableString *results;
     NSDictionary *context;
+    NLArrayStack *renderContextStack;
 }
 
-+ (NSString *)stringFromTemplate:(NSString *)template view:(id)view;
++ (NSString *)stringFromTemplate:(NSString *)templateStr view:(id)view;
 + (NSString *)stringFromTemplateNamed:(NSString *)templateName view:(id)view;
 + (NSString *)escape:(NSString *)string;
 + (NSString *)escapeAndLineBreak:(NSString *)string;
 
 - (NSString *)renderWithView:(id)view;
 
-@property (nonatomic, retain) NSString *template;
+@property (nonatomic, retain) NSString *templateStr;
 @property (nonatomic, retain) NSScanner *scanner;
 @property (nonatomic, retain) NSMutableString *results;
-@property (nonatomic, retain) NSDictionary *context;
+@property (nonatomic, retain, readonly) NSDictionary *context;
 
 @end

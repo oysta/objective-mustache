@@ -50,15 +50,32 @@ this because it returns nil for any key that it doesn't know about.
 
 ### Conditionals ###
 
-Right now, the only bit of control flow in a template is a conditional
-section. You prefix the opening tag with `#` and the closing tag with `/`. The
-section is rendered if that key returns anything non-nil.
+To use a single conditional section you prefix the opening tag with `#` and 
+the closing tag with `/`. The behaviour of the conditional section depends
+on the resulting value and type of the evaluated key.
+
+#### Single ####
+
+The section is rendered if the key returns anything non-nil.
 
     {{#shouldRenderGreeting}}
-        Hello, my name is {{first_name}} {{last_name}}
+        Hello, my name is {{firstName}} {{lastName}}
     {{/shouldRenderGreeting}}
 
-There's no else. No expressions.
+#### Looping ####
+
+When the conditional evaluates to an enumerable object, the section will be 
+rendered once for every item in the enumeration. An enumerable is an object 
+that responds to `objectEnumerator` and returns an object that is of kind  
+`NSEnumerator`. Each item in the enumeration will be set as the current 
+context for rendering the section. If the item context does not provide
+a specified key, it will be searched for in the original view.
+
+    <ol>
+    {{#peopleList}}
+        <li>Hello, my name is {{firstName}} {{lastName}}</li>
+    {{/peopleList}}
+    </ol>
 
 ### Escaping ###
 

@@ -154,5 +154,22 @@
     [view release];
 }
 
+- (void)testSectionIteratesOverAnEnumerable
+{
+    NSString *template = @"Here is{{#items}} this {{item}}{{/items}}";
+    NSArray *items = [NSArray arrayWithObjects:DICT(@"first", @"item"), DICT(@"second", @"item"), nil];
+    NSDictionary *view = DICT(items, @"items");
+    NSString *result = [NLObjectiveMustache stringFromTemplate:template view:view];
+    STAssertEqualObjects(result, @"Here is this first this second", nil);
+}
+
+- (void)testSectionDoesNotShowAnEmptyEnumerable
+{
+    NSString *template = @"Here is{{#items}} this {{item}}{{/items}}";
+    NSArray *items = [NSArray array];
+    NSDictionary *view = DICT(items, @"items");
+    NSString *result = [NLObjectiveMustache stringFromTemplate:template view:view];
+    STAssertEqualObjects(result, @"Here is", nil);
+}
 
 @end
